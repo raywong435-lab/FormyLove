@@ -1,22 +1,22 @@
 {
-  "name": "我的 PWA 應用程式全名",
-  "short_name": "PWA App",
-  "description": "這是一個提供近乎原生體驗的 PWA 範例。",
+  "name": "內部貸款助手",
+  "short_name": "貸款助手",
+  "description": "一個快速計算貸款資訊的內部工具。",
   "icons": [
     {
-      "src": "/<Your-Repository-Name>/images/icons/icon-192x192.png",
+      "src": "icons/icon-192.png",
       "type": "image/png",
       "sizes": "192x192"
     },
     {
-      "src": "/<Your-Repository-Name>/images/icons/icon-512x512.png",
+      "src": "icons/icon-512.png",
       "type": "image/png",
       "sizes": "512x512"
     }
   ],
-  "start_url": "/<Your-Repository-Name>/index.html",
-  "scope": "/<Your-Repository-Name>/",
+  "start_url": "index.html",
   "display": "standalone",
-  "background_color": "#FFFFFF",
-  "theme_color": "#3367D6"
+  "scope": ".",
+  "background_color": "#f0f2f5",
+  "theme_color": "#007bff"
 }
