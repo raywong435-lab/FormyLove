@@ -1,59 +1,73 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
+<html lang="zh-Hant">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>響應式單欄 Web App</title>
+    
+    <!-- 響應式設計與 PWA 基礎設定 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#007bff"/>
+
+    <!-- iOS 專用 PWA 設定 -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="貸款助手">
+
+    <!-- Web App Manifest 檔案連結 -->
+    <link rel="manifest" href="manifest.json">
+
+    <!-- iOS 主畫面圖示 -->
+    <link rel="apple-touch-icon" href="icons/icon-180.png">
+
+    <title>內部貸款助手</title>
+    
+    <!-- 連結 CSS 樣式表 -->
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <!-- 頁首 -->
+    <!-- 固定頁首 -->
     <header class="app-header">
-        <h1>我的 Web App</h1>
+        <h1>內部貸款助手</h1>
     </header>
 
-    <!-- 主要內容 (可滾動) -->
+    <!-- 可滾動的主要內容區域 -->
     <main class="app-content">
         <section class="content-section">
-            <h2>歡迎使用</h2>
-            <p>這是一個使用 Flexbox 和語意化 HTML5 標籤建立的響應式單欄介面範例。基礎樣式專為行動裝置設計，並能優雅地適應桌面螢幕。</p>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor.</p>
-        </section>
+            <h2>計算工具</h2>
+            <p>請輸入以下資訊以進行計算。</p>
 
-        <section class="content-section">
-            <h2>聯絡我們 (表單範例)</h2>
-            <form class="contact-form">
+            <form id="loan-form" action="#" method="post">
                 <div class="form-group">
-                    <label for="name">姓名：</label>
-                    <input type="text" id="name" name="name" placeholder="請輸入您的姓名" required>
+                    <label for="loan-amount">貸款金額：</label>
+                    <input type="number" id="loan-amount" name="loan-amount" placeholder="例如：500000" required>
                 </div>
+
                 <div class="form-group">
-                    <label for="email">電子郵件：</label>
-                    <input type="email" id="email" name="email" placeholder="example@email.com" required>
+                    <label for="interest-rate">年利率 (%)：</label>
+                    <input type="number" id="interest-rate" name="interest-rate" step="0.01" placeholder="例如：2.5" required>
                 </div>
+
                 <div class="form-group">
-                    <label for="message">訊息：</label>
-                    <textarea id="message" name="message" rows="5" placeholder="請在此輸入您的訊息..."></textarea>
+                    <label for="loan-term">貸款年期 (年)：</label>
+                    <input type="number" id="loan-term" name="loan-term" placeholder="例如：20" required>
                 </div>
-                <button type="submit" class="submit-button">送出</button>
+
+                <button type="submit" class="submit-button">計算月付金</button>
             </form>
         </section>
         
-        <section class="content-section">
-            <h2>更多內容</h2>
-            <p>向下滾動以查看更多內容。主要內容區域是唯一可滾動的部分，頁首和頁尾將固定在它們的位置。</p>
-            <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
-             <p>Donec ullamcorper nulla non metus auctor fringilla. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Sed posuere consectetur est at lobortis.</p>
+        <section id="result-section" class="content-section" style="display: none;">
+            <h2>計算結果</h2>
+            <p id="result-text">計算結果將顯示於此。</p>
         </section>
     </main>
 
-    <!-- 頁尾 -->
+    <!-- 固定頁尾 -->
     <footer class="app-footer">
-        <p>&copy; 2024 響應式設計範例. 保留所有權利。</p>
+        <p>&copy; 2024 內部專用</p>
     </footer>
 
+    <!-- 連結 JavaScript 檔案 -->
+    <script src="app.js"></script>
 </body>
 </html>
-
-
