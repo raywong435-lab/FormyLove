@@ -1,13 +1,13 @@
 /* 1. 全域與基本設定 (Mobile-First) */
 :root {
+    --header-height: 60px;
+    --footer-height: 50px;
     --primary-color: #007bff;
     --text-color: #333;
     --bg-color: #f4f7f6;
     --surface-color: #ffffff;
-    --border-color: #ddd;
-    --header-height: 60px;
-    --footer-height: 50px;
-    --touch-target-size: 44px; /* 建議最小觸控目標尺寸*/
+    --base-font-size: 16px; /* 建議行動裝置內文最小字級為 16px [19, 24] */
+    --base-spacing: 1rem; /* 16px */
 }
 
 *, *::before, *::after {
@@ -17,7 +17,7 @@
 }
 
 html {
-    font-size: 16px; /* 建議行動裝置內文最小字級為 16px*/
+    font-size: var(--base-font-size);
 }
 
 body {
@@ -29,49 +29,66 @@ body {
     /* Flexbox 佈局核心 */
     display: flex;
     flex-direction: column;
-    min-height: 100vh; /* 確保 body 至少與視窗同高*/
+    height: 100vh; /* 讓 body 佔滿整個視窗高度 */
 }
 
 /* 2. 固定頁首與頁尾 */
 .app-header, .app-footer {
     background-color: var(--primary-color);
     color: white;
-    padding: 0 1rem;
+    padding: 0 var(--base-spacing);
     display: flex;
     align-items: center;
-    justify-content: center;
-    flex-shrink: 0; /* 確保頁首和頁尾高度固定，不會被壓縮*/
-    z-index: 10;
+    
+    /* 確保頁首和頁尾高度固定，不會被壓縮 */
+    flex-shrink: 0; 
 }
 
-.app-header { height: var(--header-height); }
-.app-footer { height: var(--footer-height); }
-.app-header h1 { font-size: 1.25rem; }
-.app-footer p { font-size: 0.875rem; }
+.app-header {
+    height: var(--header-height);
+    justify-content: center; /* 行動版標題置中 */
+}
+
+.app-footer {
+    height: var(--footer-height);
+    justify-content: center;
+}
+
+.app-header h1 {
+    font-size: 1.25rem; /* 20px */
+}
+
+.app-footer p {
+    font-size: 0.875rem; /* 14px */
+}
 
 /* 3. 可滾動的主要內容區域 */
 .app-content {
-    flex-grow: 1; /* 讓內容區填滿剩餘空間*/
-    overflow-y: auto; /* 當內容超出時，僅在此區域產生滾動條*/
-    padding: 1.5rem;
+    /* 讓內容區填滿剩餘空間 */
+    flex-grow: 1; 
+    
+    /* 當內容超出時，僅在此區域產生滾動條 */
+    overflow-y: auto; 
+    
+    padding: var(--base-spacing);
 }
 
 .content-section {
     background-color: var(--surface-color);
-    padding: 1.5rem;
+    padding: var(--base-spacing);
     border-radius: 8px;
-    margin-bottom: 1.5rem;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.07);
+    margin-bottom: var(--base-spacing);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
 
 h2 {
+    margin-bottom: 0.75rem;
     color: var(--primary-color);
-    margin-bottom: 1rem;
 }
 
 /* 4. 行動裝置表單與觸控優化 */
 .form-group {
-    margin-bottom: 1.25rem;
+    margin-bottom: 1rem;
 }
 
 .form-group label {
@@ -84,16 +101,14 @@ h2 {
 .form-group textarea,
 .submit-button {
     width: 100%;
-    padding: 0.75rem;
-    font-size: 1rem; /* 確保字體清晰，避免 iOS 自動縮放*/
-    border: 1px solid var(--border-color);
+    padding: 0.75rem; /* 增加內距，擴大觸控區域 */
+    font-size: 1rem; /* 確保字體清晰 */
+    border: 1px solid #ccc;
     border-radius: 4px;
     font-family: inherit;
-    -webkit-appearance: none; /* 移除 iOS 預設樣式 */
 }
 
 .submit-button {
-    min-height: var(--touch-target-size); /* 確保按鈕高度足夠，方便觸控*/
     background-color: var(--primary-color);
     color: white;
     border: none;
@@ -106,20 +121,39 @@ h2 {
     background-color: #0056b3;
 }
 
+
 /* 5. 響應式設計：桌面螢幕 (螢幕寬度 >= 768px) */
 @media (min-width: 768px) {
-    html {
-        font-size: 18px; /* 稍微放大桌面版基礎字體*/
+    /* 在大螢幕上，將整體佈局限制最大寬度並置中 */
+    body {
+        /* 為了讓背景色充滿整個頁面，但內容置中，
+           我們在 body 上設定背景色，並讓內容區塊置中 */
     }
     
-    .app-content {
-        max-width: 800px; /* 設定最大寬度以提升可讀性*/
-        margin: 0 auto; /* 讓內容區水平居中*/
-        padding: 2rem;
+    .app-header, .app-content, .app-footer {
+        max-width: 960px; /* 設定最大寬度 [6, 12] */
+        margin-left: auto;
+        margin-right: auto;
+        width: 100%; /* 確保在過渡寬度時仍能填滿 */
     }
 
+    /* 調整桌面版的頁首/頁尾 padding */
     .app-header {
-        justify-content: flex-start; /* 桌面版標題靠左 */
-        padding: 0 2rem;
+        justify-content: flex-start; /* 標題靠左 */
+        padding: 0 calc(var(--base-spacing) * 2);
+    }
+    
+    .app-footer {
+         justify-content: center;
+         padding: 0 calc(var(--base-spacing) * 2);
+    }
+    
+    /* 調整桌面版的字體大小，提升閱讀體驗 [19] */
+    html {
+        font-size: 18px; /* 稍微放大基礎字體 */
+    }
+    
+    .app-header h1 {
+        font-size: 1.5rem; /* 27px */
     }
 }
