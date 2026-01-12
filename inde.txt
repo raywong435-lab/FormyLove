@@ -1,32 +1,49 @@
 <!DOCTYPE html>
-<html lang="zh-Hant">
+<html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-    <!-- 響應式設計：確保在各種裝置上正常顯示 -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <!-- 主題顏色：設定瀏覽器工具列顏色 (Android) -->
-    <meta name="theme-color" content="#3367D6"/>
-
-    <!-- 關鍵！讓 Web App 在 iOS 上以獨立 App 模式（全螢幕）啟動 -->
-    <meta name="apple-mobile-web-app-capable" content="yes"> [20]
-
-    <!-- 設定 iOS 狀態列樣式 (可設為 default, black, black-translucent) -->
-    <meta name="apple-mobile-web-app-status-bar-style" content="black">
-
-    <title>我的 PWA 應用程式</title>
-
-    <!-- 連結 Web App Manifest 檔案 -->
-    <link rel="manifest" href="/<Your-Repository-Name>/manifest.json"> [13]
-
-    <!-- iOS 主畫面圖示 (提供不同尺寸以適應不同裝置) -->
-    <link rel="apple-touch-icon" href="/<Your-Repository-Name>/images/icons/icon-192x192.png">
-    
-    <link rel="stylesheet" href="/<Your-Repository-Name>/style.css">
+    <title>響應式單欄 Web App</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>歡迎來到我的 PWA！</h1>
+    <!-- 固定的頁首 -->
+    <header class="app-header">
+        <h1>我的 Web App</h1>
+    </header>
 
-    <script src="/<Your-Repository-Name>/app.js"></script>
+    <!-- 可滾動的主要內容 -->
+    <main class="app-content">
+        <section class="content-section">
+            <h2>聯絡我們 (表單範例)</h2>
+            <form class="contact-form" action="#" method="post">
+                <div class="form-group">
+                    <label for="name">姓名：</label>
+                    <input type="text" id="name" name="name" placeholder="請輸入您的姓名" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">電子郵件：</label>
+                    <input type="email" id="email" name="email" placeholder="example@email.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="message">訊息：</label>
+                    <textarea id="message" name="message" rows="5" placeholder="請在此輸入您的訊息..."></textarea>
+                </div>
+                <button type="submit" class="submit-button">送出</button>
+            </form>
+        </section>
+        <!-- 更多內容以展示滾動效果 -->
+        <section class="content-section">
+            <h2>更多內容</h2>
+            <p>向下滾動以查看更多內容。主要內容區域是唯一可滾動的部分，頁首和頁尾將固定在它們的位置。</p>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor.</p>
+        </section>
+    </main>
+
+    <!-- 固定的頁尾 -->
+    <footer class="app-footer">
+        <p>&copy; 2024 響應式設計範例. 保留所有權利。</p>
+    </footer>
 </body>
 </html>
+
