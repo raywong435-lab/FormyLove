@@ -6,7 +6,9 @@ const urlsToCache = [
   'style.css',
   'app.js',
   'manifest.json',
-  'icons/icon-192.png'
+  'icons/icon-180.png',
+  'icons/icon-192.png',
+  'icons/icon-512.png'
 ];
 
 // 監聽 'install' 事件，在 Service Worker 安裝時進行快取

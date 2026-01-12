@@ -4,6 +4,12 @@
   "description": "一個快速計算貸款資訊的內部工具。",
   "icons": [
     {
+      "src": "icons/icon-180.png",
+      "type": "image/png",
+      "sizes": "180x180",
+      "purpose": "any maskable"
+    },
+    {
       "src": "icons/icon-192.png",
       "type": "image/png",
       "sizes": "192x192"
