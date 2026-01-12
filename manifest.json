@@ -1,0 +1,22 @@
+{
+  "name": "我的 PWA 應用程式全名",
+  "short_name": "PWA App",
+  "description": "這是一個提供近乎原生體驗的 PWA 範例。",
+  "icons": [
+    {
+      "src": "/<Your-Repository-Name>/images/icons/icon-192x192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "/<Your-Repository-Name>/images/icons/icon-512x512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": "/<Your-Repository-Name>/index.html",
+  "scope": "/<Your-Repository-Name>/",
+  "display": "standalone",
+  "background_color": "#FFFFFF",
+  "theme_color": "#3367D6"
+}

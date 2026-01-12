@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <!-- 響應式設計：確保在各種裝置上正常顯示 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- 主題顏色：設定瀏覽器工具列顏色 (Android) -->
+    <meta name="theme-color" content="#3367D6"/>
+
+    <!-- 關鍵！讓 Web App 在 iOS 上以獨立 App 模式（全螢幕）啟動 -->
+    <meta name="apple-mobile-web-app-capable" content="yes"> [20]
+
+    <!-- 設定 iOS 狀態列樣式 (可設為 default, black, black-translucent) -->
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <title>我的 PWA 應用程式</title>
+
+    <!-- 連結 Web App Manifest 檔案 -->
+    <link rel="manifest" href="/<Your-Repository-Name>/manifest.json"> [13]
+
+    <!-- iOS 主畫面圖示 (提供不同尺寸以適應不同裝置) -->
+    <link rel="apple-touch-icon" href="/<Your-Repository-Name>/images/icons/icon-192x192.png">
+    
+    <link rel="stylesheet" href="/<Your-Repository-Name>/style.css">
+</head>
+<body>
+    <h1>歡迎來到我的 PWA！</h1>
+
+    <script src="/<Your-Repository-Name>/app.js"></script>
+</body>
+</html>
