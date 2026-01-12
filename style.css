@@ -1,0 +1,125 @@
+/* 1. 全域與基本設定 (Mobile-First) */
+:root {
+    --primary-color: #007bff;
+    --text-color: #333;
+    --bg-color: #f4f7f6;
+    --surface-color: #ffffff;
+    --border-color: #ddd;
+    --header-height: 60px;
+    --footer-height: 50px;
+    --touch-target-size: 44px; /* 建議最小觸控目標尺寸*/
+}
+
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    font-size: 16px; /* 建議行動裝置內文最小字級為 16px*/
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.6;
+    color: var(--text-color);
+    background-color: var(--bg-color);
+    
+    /* Flexbox 佈局核心 */
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* 確保 body 至少與視窗同高*/
+}
+
+/* 2. 固定頁首與頁尾 */
+.app-header, .app-footer {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 0 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0; /* 確保頁首和頁尾高度固定，不會被壓縮*/
+    z-index: 10;
+}
+
+.app-header { height: var(--header-height); }
+.app-footer { height: var(--footer-height); }
+.app-header h1 { font-size: 1.25rem; }
+.app-footer p { font-size: 0.875rem; }
+
+/* 3. 可滾動的主要內容區域 */
+.app-content {
+    flex-grow: 1; /* 讓內容區填滿剩餘空間*/
+    overflow-y: auto; /* 當內容超出時，僅在此區域產生滾動條*/
+    padding: 1.5rem;
+}
+
+.content-section {
+    background-color: var(--surface-color);
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.07);
+}
+
+h2 {
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+/* 4. 行動裝置表單與觸控優化 */
+.form-group {
+    margin-bottom: 1.25rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+}
+
+.form-group input,
+.form-group textarea,
+.submit-button {
+    width: 100%;
+    padding: 0.75rem;
+    font-size: 1rem; /* 確保字體清晰，避免 iOS 自動縮放*/
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    font-family: inherit;
+    -webkit-appearance: none; /* 移除 iOS 預設樣式 */
+}
+
+.submit-button {
+    min-height: var(--touch-target-size); /* 確保按鈕高度足夠，方便觸控*/
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.2s;
+}
+
+.submit-button:hover {
+    background-color: #0056b3;
+}
+
+/* 5. 響應式設計：桌面螢幕 (螢幕寬度 >= 768px) */
+@media (min-width: 768px) {
+    html {
+        font-size: 18px; /* 稍微放大桌面版基礎字體*/
+    }
+    
+    .app-content {
+        max-width: 800px; /* 設定最大寬度以提升可讀性*/
+        margin: 0 auto; /* 讓內容區水平居中*/
+        padding: 2rem;
+    }
+
+    .app-header {
+        justify-content: flex-start; /* 桌面版標題靠左 */
+        padding: 0 2rem;
+    }
+}
