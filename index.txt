@@ -7,16 +7,23 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- 固定的頁首 -->
+
+    <!-- 頁首 -->
     <header class="app-header">
         <h1>我的 Web App</h1>
     </header>
 
-    <!-- 可滾動的主要內容 -->
+    <!-- 主要內容 (可滾動) -->
     <main class="app-content">
         <section class="content-section">
+            <h2>歡迎使用</h2>
+            <p>這是一個使用 Flexbox 和語意化 HTML5 標籤建立的響應式單欄介面範例。基礎樣式專為行動裝置設計，並能優雅地適應桌面螢幕。</p>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor.</p>
+        </section>
+
+        <section class="content-section">
             <h2>聯絡我們 (表單範例)</h2>
-            <form class="contact-form" action="#" method="post">
+            <form class="contact-form">
                 <div class="form-group">
                     <label for="name">姓名：</label>
                     <input type="text" id="name" name="name" placeholder="請輸入您的姓名" required>
@@ -32,18 +39,21 @@
                 <button type="submit" class="submit-button">送出</button>
             </form>
         </section>
-        <!-- 更多內容以展示滾動效果 -->
+        
         <section class="content-section">
             <h2>更多內容</h2>
             <p>向下滾動以查看更多內容。主要內容區域是唯一可滾動的部分，頁首和頁尾將固定在它們的位置。</p>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor.</p>
+            <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
+             <p>Donec ullamcorper nulla non metus auctor fringilla. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Sed posuere consectetur est at lobortis.</p>
         </section>
     </main>
 
-    <!-- 固定的頁尾 -->
+    <!-- 頁尾 -->
     <footer class="app-footer">
         <p>&copy; 2024 響應式設計範例. 保留所有權利。</p>
     </footer>
+
 </body>
 </html>
+
 
