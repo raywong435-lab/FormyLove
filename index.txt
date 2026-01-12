@@ -1,73 +1,13 @@
-<!DOCTYPE html>
-<html lang="zh-Hant">
-<head>
-    <meta charset="UTF-8">
-    
-    <!-- 響應式設計與 PWA 基礎設定 -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <meta name="theme-color" content="#007bff"/>
+專案檔案結構說明：
 
-    <!-- iOS 專用 PWA 設定 -->
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="貸款助手">
+- index.html: 應用程式的主要 HTML 結構。
+- style.css: 所有的 CSS 樣式。
+- app.js: JavaScript 邏輯，包含 Service Worker 註冊和表單計算。
+- manifest.json: PWA 設定檔，定義 App 名稱、圖示等。
+- sw.js: Service Worker 腳本，用於實現離線快取。
+- /icons/ (資料夾): 存放您的應用程式圖示 (例如 icon-192.png, icon-512.png, apple-icon-180.png)。
 
-    <!-- Web App Manifest 檔案連結 -->
-    <link rel="manifest" href="manifest.json">
-
-    <!-- iOS 主畫面圖示 -->
-    <link rel="apple-touch-icon" href="icons/icon-180.png">
-
-    <title>內部貸款助手</title>
-    
-    <!-- 連結 CSS 樣式表 -->
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-
-    <!-- 固定頁首 -->
-    <header class="app-header">
-        <h1>內部貸款助手</h1>
-    </header>
-
-    <!-- 可滾動的主要內容區域 -->
-    <main class="app-content">
-        <section class="content-section">
-            <h2>計算工具</h2>
-            <p>請輸入以下資訊以進行計算。</p>
-
-            <form id="loan-form" action="#" method="post">
-                <div class="form-group">
-                    <label for="loan-amount">貸款金額：</label>
-                    <input type="number" id="loan-amount" name="loan-amount" placeholder="例如：500000" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="interest-rate">年利率 (%)：</label>
-                    <input type="number" id="interest-rate" name="interest-rate" step="0.01" placeholder="例如：2.5" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="loan-term">貸款年期 (年)：</label>
-                    <input type="number" id="loan-term" name="loan-term" placeholder="例如：20" required>
-                </div>
-
-                <button type="submit" class="submit-button">計算月付金</button>
-            </form>
-        </section>
-        
-        <section id="result-section" class="content-section" style="display: none;">
-            <h2>計算結果</h2>
-            <p id="result-text">計算結果將顯示於此。</p>
-        </section>
-    </main>
-
-    <!-- 固定頁尾 -->
-    <footer class="app-footer">
-        <p>&copy; 2024 內部專用</p>
-    </footer>
-
-    <!-- 連結 JavaScript 檔案 -->
-    <script src="app.js"></script>
-</body>
-</html>
+部署注意事項：
+- 確保所有檔案都已上傳到您的 GitHub 儲存庫。
+- 在 GitHub Pages 設定中，確認部署來源是您的主分支。
+- 由於 PWA 功能需要 HTTPS，使用 GitHub Pages 或 Netlify 是很好的選擇。
