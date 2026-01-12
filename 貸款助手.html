@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>優化版：AI 貸款智能推算助手</title>
+  <style>
+    /* --- 1. CSS 變數與主題化設計 --- */
+    :root {
+      --primary-color: #2563eb;
+      --primary-hover: #1d4ed8;
+      --bg-color: #f8fafc;
+      --surface-color: #ffffff;
+      --text-color: #0f172a;
+      --muted-text-color: #64748b;
+      --border-color: #e2e8f0;
+      --focus-ring-color: rgba(37, 99, 235, 0.2);
+      --success-bg: #f0fdf4;
+      --success-border: #bbf7d0;
+      --success-text: #15803d;
+      --error-bg: #fef2f2;
+      --error-border: #fecaca;
+      --error-text: #b91c1c;
+      --warning-bg: #fffbeb;
+      --warning-border: #fed7aa;
+      --warning-text: #b45309;
+      --border-radius: 12px;
+      --shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+      --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    [data-theme='dark'] {
+      --primary-color: #3b82f6;
+      --primary-hover: #60a5fa;
+      --bg-color: #0f172a;
+      --surface-color: #1e293b;
+      --text-color: #f1f5f9;
+      --muted-text-color: #94a3b8;
+      --border-color: #334155;
+      --focus-ring-color: rgba(59, 130, 246, 0.3);
+      --success-bg: #162a22;
+      --success-border: #204d3a;
+      --success-text: #6ee7b7;
+      --error-bg: #2d1a1a;
+      --error-border: #5c2222;
+      --error-text: #fca5a5;
+      --warning-bg: #2a2216;
+      --warning-border: #5a3b12;
+      --warning-text: #fdba74;
+    }
+
+    /* --- 2. 基礎與佈局樣式 --- */
+    *, *::before, *::after { box-sizing: border-box; }
+
+    body {
+      font-family: var(--font-family);
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    .container { width: 100%; max-width: 640px; }
+
+    .theme-switcher {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 16px;
+    }
+
+    .card {
+      background-color: var(--surface-color);
+      padding: 28px;
+      border-radius: var(--border-radius);
+      border: 1px solid var(--border-color);
+      box-shadow: var(--shadow);
+      transition: background-color 0.3s, border-color 0.3s;
+    }
+
+    /* --- 3. 內容與表單元素樣式 --- */
+    h1 {
+      margin: 0 0 8px 0;
+      font-size: 1.5rem;
+      border-left: 5px solid var(--primary-color);
+      padding-left: 12px;
+    }
+
+    .subtitle { margin: 0 0 24px 0; color: var(--muted-text-color); }
+
+    #loan-form { display: flex; flex-direction: column; gap: 20px; }
+
+    fieldset {
+      border: 1px solid var(--border-color);
+      border-radius: var(--border-radius);
+      padding: 16px;
+      margin: 0;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    legend { padding: 0 8px; font-weight: 600; color: var(--muted-text-color); }
+
+    .form-group { display: flex; flex-direction: column; gap: 6px; }
+
+    .full-width { grid-column: 1 / -1; }
+
+    label { font-size: 0.9rem; font-weight: 500; color: var(--muted-text-color); }
+
+    input[type="number"] {
+      padding: 10px 14px;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      font-size: 1rem;
+      outline: none;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      width: 100%;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    /* --- 4. 互動與狀態樣式 --- */
+    input[type="number"]:focus-visible {
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px var(--focus-ring-color);
+    }
+
+    input.is-invalid { border-color: var(--error-text); }
+
+    input.is-invalid:focus-visible {
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--error-text) 25%, transparent);
+    }
+
+    .button-group { display: flex; gap: 12px; flex-wrap: wrap; }
+
+    .btn {
+      background-color: var(--primary-color);
+      color: #fff;
+      padding: 12px 16px;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.2s, transform 0.1s;
+      flex: 1;
+      min-width: 180px;
+    }
+
+    .btn:hover { background-color: var(--primary-hover); }
+
+    .btn:active { transform: translateY(1px); }
+
+    .btn.secondary {
+      background-color: transparent;
+      color: var(--primary-color);
+      border: 1px solid var(--primary-color);
+      flex: 0;
+      min-width: 120px;
+    }
+
+    .btn.secondary:hover {
+      background-color: color-mix(in srgb, var(--primary-color) 10%, transparent);
+    }
+
+    .message-box {
+      margin-top: 16px;
+      font-size: 0.95rem;
+      padding: 12px 16px;
+      border-radius: 8px;
+      border: 1px solid transparent;
+      display: none; /* Controlled by JS */
+      white-space: pre-line;
+    }
+
+    .message-box.success {
+      background-color: var(--success-bg);
+      border-color: var(--success-border);
+      color: var(--success-text);
+    }
+
+    /* ✅ 新增：error 樣式（你 JS 會用到） */
+    .message-box.error {
+      background-color: var(--error-bg);
+      border-color: var(--error-border);
+      color: var(--error-text);
+    }
+
+    /* ✅ 新增：warning（利率輸入與月供不一致提示） */
+    .message-box.warning {
+      background-color: var(--warning-bg);
+      border-color: var(--warning-border);
+      color: var(--warning-text);
+    }
+
+    .error-message {
+      font-size: 0.85rem;
+      color: var(--error-text);
+      display: none; /* Controlled by JS */
+      margin-top: 2px;
+    }
+
+    .result-box {
+      margin-top: 24px;
+      padding: 16px;
+      background-color: color-mix(in srgb, var(--primary-color) 8%, transparent);
+      border-radius: var(--border-radius);
+      border: 1px solid color-mix(in srgb, var(--primary-color) 20%, transparent);
+      display: none; /* Controlled by JS */
+    }
+
+    .result-item {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 10px 0;
+      font-size: 0.95rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+    .result-item:last-child { border-bottom: none; }
+    .result-item small { color: var(--muted-text-color); }
+    .result-value {
+      font-weight: 700;
+      color: var(--primary-color);
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+    }
+    .result-value.important { color: var(--error-text); }
+
+    .hint {
+      margin-top: 16px;
+      color: var(--muted-text-color);
+      font-size: 0.8rem;
+      text-align: center;
+    }
+
+    /* --- 5. 響應式設計 --- */
+    @media (max-width: 600px) {
+      fieldset { grid-template-columns: 1fr; }
+      .btn { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <header class="theme-switcher">
+    <button type="button" id="theme-toggle" class="btn secondary" style="min-width: auto; padding: 8px 12px;">切換主題</button>
+  </header>
+
+  <main class="card">
+    <header>
+      <h1>🏦 貸款智能補全</h1>
+      <p class="subtitle">輸入「本金 + 月供 + 總期數」，可選填已還期數/年利率；系統會反推其餘數值。</p>
+    </header>
+
+    <form id="loan-form" novalidate>
+      <fieldset>
+        <legend>主要參數</legend>
+        <div class="form-group">
+          <label for="p">貸款金額 (本金)</label>
+          <input type="number" id="p" placeholder="例如 30000" min="1" step="1" inputmode="numeric" required>
+          <div class="error-message" id="p-error"></div>
+        </div>
+        <div class="form-group">
+          <label for="pmt">每月還款額</label>
+          <input type="number" id="pmt" placeholder="例如 3000" min="1" step="1" inputmode="numeric" required>
+          <div class="error-message" id="pmt-error"></div>
+        </div>
+        <div class="form-group">
+          <label for="n">總期數 (月)</label>
+          <input type="number" id="n" placeholder="例如 12" min="1" step="1" inputmode="numeric" required>
+          <div class="error-message" id="n-error"></div>
+        </div>
+        <div class="form-group">
+          <label for="repaid_n">已還期數 (月) (選填)</label>
+          <input type="number" id="repaid_n" placeholder="例如 3" value="0" min="0" step="1" inputmode="numeric">
+          <div class="error-message" id="repaid_n-error"></div>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>選填參數</legend>
+        <div class="form-group full-width">
+          <label for="rate">已知年利率 (%) (不填則反推)</label>
+          <input type="number" id="rate" placeholder="例如 24.00" min="0" step="0.01" inputmode="decimal">
+          <div class="error-message" id="rate-error"></div>
+        </div>
+      </fieldset>
+
+      <div class="button-group">
+        <button class="btn" type="submit">✨ 即時智能計算</button>
+        <button class="btn secondary" type="reset">重設</button>
+      </div>
+    </form>
+
+    <!-- ✅ 加 aria-live / role -->
+    <div id="message-box" class="message-box" role="alert" aria-live="polite"></div>
+
+    <section id="result-area" class="result-box" aria-live="polite">
+      <div class="result-item">
+        <span>推算年利率 (名目)</span>
+        <span class="result-value important" id="res_apr"></span>
+      </div>
+      <div class="result-item">
+        <span>推算年利率 (有效)</span>
+        <span class="result-value" id="res_ear"></span>
+      </div>
+      <div class="result-item">
+        <span>剩餘期數</span>
+        <span class="result-value" id="res_remain_n"></span>
+      </div>
+      <div class="result-item">
+        <span>結欠本金 (估算)</span>
+        <span class="result-value" id="res_balance"></span>
+      </div>
+      <div class="result-item">
+        <span>現時結欠 (剩餘月供總額)</span>
+        <span class="result-value" id="res_total_debt"></span>
+      </div>
+      <div class="result-item">
+        <span>剩餘利息 (估算)<br><small>= 剩餘月供總額 - 結欠本金</small></span>
+        <span class="result-value" id="res_remain_interest"></span>
+      </div>
+      <div class="result-item">
+        <span>已還利息 (估算)</span>
+        <span class="result-value" id="res_paid_interest"></span>
+      </div>
+    </section>
+
+    <p class="hint">註：此為等額本息模型推算；實際結清/罰息/日息/手續費以銀行或財務公司最終報價為準。</p>
+  </main>
+</div>
+
+<script type="module">
+  // --- 1. CONFIGURATION MODULE ---
+  const config = {
+    errorMessages: {
+      p: {
+        valueMissing: '請輸入貸款金額。',
+        rangeUnderflow: '貸款金額必須大於 0。'
+      },
+      pmt: {
+        valueMissing: '請輸入每月還款額。',
+        rangeUnderflow: '每月還款額必須大於 0。'
+      },
+      n: {
+        valueMissing: '請輸入總期數。',
+        rangeUnderflow: '總期數必須大於 0。',
+        stepMismatch: '總期數必須為整數。'
+      },
+      repaid_n: {
+        rangeUnderflow: '已還期數不能為負數。',
+        stepMismatch: '已還期數必須為整數。',
+        customError: '已還期數不可大於總期數。'
+      },
+      rate: {
+        rangeUnderflow: '年利率不能為負數。'
+      }
+    }
+  };
+
+  // --- 2. VIEW MODULE (DOM Manipulation) ---
+  const view = {
+    elements: {
+      form: document.getElementById('loan-form'),
+      inputs: {
+        p: document.getElementById('p'),
+        pmt: document.getElementById('pmt'),
+        n: document.getElementById('n'),
+        repaid_n: document.getElementById('repaid_n'),
+        rate: document.getElementById('rate'),
+      },
+      messageBox: document.getElementById('message-box'),
+      resultArea: document.getElementById('result-area'),
+      results: {
+        apr: document.getElementById('res_apr'),
+        ear: document.getElementById('res_ear'),
+        remain_n: document.getElementById('res_remain_n'),
+        balance: document.getElementById('res_balance'),
+        total_debt: document.getElementById('res_total_debt'),
+        remain_interest: document.getElementById('res_remain_interest'),
+        paid_interest: document.getElementById('res_paid_interest'),
+      },
+      themeToggle: document.getElementById('theme-toggle'),
+    },
+
+    getSanitizedInputs() {
+      const sanitize = (el) => {
+        const val = el.value.trim();
+        return val === '' ? null : Number(val);
+      };
+      return {
+        P: sanitize(this.elements.inputs.p),
+        PMT: sanitize(this.elements.inputs.pmt),
+        N: sanitize(this.elements.inputs.n),
+        K: sanitize(this.elements.inputs.repaid_n),
+        annualRate: sanitize(this.elements.inputs.rate),
+      };
+    },
+
+    showMessage(type, text) {
+      this.elements.messageBox.className = `message-box ${type}`;
+      this.elements.messageBox.textContent = text;
+      this.elements.messageBox.style.display = 'block';
+    },
+
+    clearMessages() {
+      this.elements.messageBox.style.display = 'none';
+      this.elements.messageBox.textContent = '';
+      this.elements.messageBox.className = 'message-box';
+      for (const key in this.elements.inputs) this.clearError(key);
+    },
+
+    displayError(fieldKey, message) {
+      const inputEl = this.elements.inputs[fieldKey];
+      const errorEl = document.getElementById(`${fieldKey}-error`);
+      if (inputEl && errorEl) {
+        inputEl.classList.add('is-invalid');
+        errorEl.textContent = message;
+        errorEl.style.display = 'block';
+      }
+    },
+
+    clearError(fieldKey) {
+      const inputEl = this.elements.inputs[fieldKey];
+      const errorEl = document.getElementById(`${fieldKey}-error`);
+      if (inputEl && errorEl) {
+        inputEl.classList.remove('is-invalid');
+        errorEl.style.display = 'none';
+        errorEl.textContent = '';
+      }
+    },
+
+    renderResults(data) {
+      const nfCurrency = new Intl.NumberFormat('zh-HK', {
+        style: 'currency', currency: 'HKD', maximumFractionDigits: 0
+      });
+      const formatPct = (x) => !Number.isFinite(x) ? '—' : (x * 100).toFixed(2) + '%';
+
+      this.elements.results.apr.textContent = formatPct(data.aprNominal);
+      this.elements.results.ear.textContent = formatPct(data.earEffective);
+      this.elements.results.remain_n.textContent = `${data.remainN} 期`;
+      this.elements.results.balance.textContent = nfCurrency.format(Math.max(0, Math.round(data.balance)));
+      this.elements.results.total_debt.textContent = nfCurrency.format(Math.max(0, Math.round(data.totalRemainPay)));
+      this.elements.results.remain_interest.textContent = nfCurrency.format(Math.round(data.remainInterest));
+
+      // 已還利息可能為負（資料不一致/四捨五入），顯示為負數亦可接受
+      const paid = Math.round(data.paidInterest);
+      this.elements.results.paid_interest.textContent =
+        paid >= 0 ? nfCurrency.format(paid) : `-${nfCurrency.format(Math.abs(paid))}`;
+
+      this.elements.resultArea.style.display = 'block';
+    },
+
+    reset() {
+      this.elements.form.reset();
+      this.elements.resultArea.style.display = 'none';
+      this.clearMessages();
+    },
+
+    toggleTheme() {
+      const currentTheme = document.documentElement.getAttribute('data-theme');
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+    },
+
+    applyInitialTheme() {
+      const savedTheme = localStorage.getItem('theme');
+      const systemDark = window.matchMedia?.('(prefers-color-scheme: dark)').matches;
+      const theme = savedTheme || (systemDark ? 'dark' : 'light');
+      document.documentElement.setAttribute('data-theme', theme);
+    }
+  };
+
+  // --- 3. MODEL MODULE (Business Logic & Calculation) ---
+  const model = {
+    paymentFromRate(P, r, N) {
+      if (Math.abs(r) < 1e-12) return P / N;
+      return (P * r) / (1 - Math.pow(1 + r, -N));
+    },
+
+    solveMonthlyRate(P, PMT, N) {
+      if (PMT <= P / N + 1e-9) return 0;
+
+      let low = 0;
+      let high = 0.5; // Start with 50% monthly rate
+      let guard = 0;
+
+      const pay = (r) => this.paymentFromRate(P, r, N);
+
+      while (guard < 60 && high < 20) {
+        const ph = pay(high);
+        if (!Number.isFinite(ph) || ph >= PMT) break;
+        high *= 2;
+        guard++;
+      }
+
+      const ph2 = pay(high);
+      if (!Number.isFinite(ph2) || ph2 < PMT) return NaN;
+
+      for (let i = 0; i < 80; i++) {
+        const mid = (low + high) / 2;
+        const pm = pay(mid);
+        if (!Number.isFinite(pm) || pm >= PMT) high = mid;
+        else low = mid;
+      }
+      return (low + high) / 2;
+    },
+
+    calculate(inputs) {
+      const { P, PMT, N, K, annualRate } = inputs;
+
+      const kSafe = (K ?? 0);
+      if (kSafe > N) return { error: '已還期數不可大於總期數。' };
+
+      let monthlyRate;
+      let usedInputRate = false;
+      let warning = null;
+
+      if (annualRate !== null) {
+        monthlyRate = annualRate / 100 / 12;
+        usedInputRate = true;
+
+        // ✅ 輸入利率一致性檢查（提示用戶資料可能唔一致）
+        const impliedPMT = this.paymentFromRate(P, monthlyRate, N);
+        const diffRatio = Math.abs(impliedPMT - PMT) / PMT;
+        if (Number.isFinite(diffRatio) && diffRatio > 0.02) {
+          warning = `注意：按你輸入的年利率推算，合理月供約為 ${Math.round(impliedPMT)}，與你輸入的月供差異較大；結果將以「你輸入的年利率」為準。`;
+        }
+      } else {
+        monthlyRate = this.solveMonthlyRate(P, PMT, N);
+        if (!Number.isFinite(monthlyRate)) {
+          return { error: '無法反推利率：請檢查輸入（例如：月供過高/期數過短/資料不一致）。' };
+        }
+      }
+
+      const remainN = N - kSafe;
+
+      const balance = Math.abs(monthlyRate) < 1e-12
+        ? PMT * remainN
+        : PMT * (1 - Math.pow(1 + monthlyRate, -remainN)) / monthlyRate;
+
+      const totalRemainPay = PMT * remainN;
+      const remainInterest = totalRemainPay - balance;
+
+      const paidTotal = PMT * kSafe;
+      const paidPrincipal = P - balance;
+      const paidInterest = paidTotal - paidPrincipal;
+
+      const aprNominal = monthlyRate * 12;
+      const earEffective = Math.pow(1 + monthlyRate, 12) - 1;
+
+      return {
+        success: true,
+        usedInputRate,
+        warning,
+        aprNominal,
+        earEffective,
+        remainN,
+        balance,
+        totalRemainPay,
+        remainInterest,
+        paidInterest
+      };
+    }
+  };
+
+  // --- 4. CONTROLLER MODULE (Event Handling & Orchestration) ---
+  const controller = {
+    init() {
+      view.applyInitialTheme();
+      this.setupEventListeners();
+    },
+
+    setupEventListeners() {
+      view.elements.form.addEventListener('submit', this.handleFormSubmit.bind(this));
+      view.elements.form.addEventListener('reset', this.handleReset.bind(this));
+      view.elements.themeToggle.addEventListener('click', () => view.toggleTheme());
+
+      for (const key in view.elements.inputs) {
+        const inputEl = view.elements.inputs[key];
+
+        inputEl.addEventListener('blur', () => this.validateField(key));
+
+        inputEl.addEventListener('input', () => {
+          view.clearError(key);
+
+          // ✅ n 變動時，repaid_n 的 customValidity 要跟住更新
+          if (key === 'n' && view.elements.inputs.repaid_n.value.trim() !== '') {
+            this.validateField('repaid_n');
+          }
+          if (key === 'repaid_n' && view.elements.inputs.n.value.trim() !== '') {
+            // 也可順便更新 n（視覺一致）
+            this.validateField('repaid_n');
+          }
+        });
+      }
+    },
+
+    handleFormSubmit(e) {
+      e.preventDefault();
+      view.clearMessages();
+
+      if (!this.validateAllFields()) {
+        view.showMessage('error', '請修正表單中的錯誤。');
+        view.elements.resultArea.style.display = 'none';
+        return;
+      }
+
+      const inputs = view.getSanitizedInputs();
+      const result = model.calculate(inputs);
+
+      if (result.error) {
+        view.showMessage('error', result.error);
+        view.elements.resultArea.style.display = 'none';
+        return;
+      }
+
+      view.renderResults(result);
+
+      // ✅ 若反推，回填 rate 方便複製
+      if (!result.usedInputRate) {
+        view.elements.inputs.rate.value = (result.aprNominal * 100).toFixed(2);
+        view.showMessage('success', '已成功反推利率（按等額本息模型）。');
+      } else if (result.warning) {
+        view.showMessage('warning', result.warning);
+      } else {
+        view.showMessage('success', '計算成功。');
+      }
+    },
+
+    handleReset() {
+      view.reset();
+    },
+
+    validateField(key) {
+      const inputEl = view.elements.inputs[key];
+      if (!inputEl) return true;
+
+      // ✅ 交叉驗證：repaid_n <= n（用 customValidity 統一處理）
+      if (key === 'repaid_n') {
+        const nEl = view.elements.inputs.n;
+        const N = nEl.value.trim() === '' ? NaN : Number(nEl.value);
+        const K = inputEl.value.trim() === '' ? NaN : Number(inputEl.value);
+
+        inputEl.setCustomValidity('');
+        if (Number.isFinite(N) && Number.isFinite(K) && K > N) {
+          inputEl.setCustomValidity(config.errorMessages.repaid_n.customError);
+        }
+      }
+
+      const validity = inputEl.validity;
+      if (validity.valid) {
+        view.clearError(key);
+        return true;
+      }
+
+      const map = config.errorMessages[key] || {};
+      for (const errorType in map) {
+        if (validity[errorType]) {
+          view.displayError(key, map[errorType]);
+          return false;
+        }
+      }
+
+      // fallback
+      view.displayError(key, '輸入有誤。');
+      return false;
+    },
+
+    // ✅ 必填 + 「有填值」的選填欄位都要驗證；並將焦點移到第一個錯誤欄位
+    validateAllFields() {
+      let allValid = true;
+
+      for (const key in view.elements.inputs) {
+        const el = view.elements.inputs[key];
+        const hasValue = el.value.trim() !== '';
+        const mustCheck = el.hasAttribute('required') || hasValue;
+
+        if (mustCheck && !this.validateField(key)) allValid = false;
+      }
+
+      if (!allValid) {
+        const firstInvalid = document.querySelector('input.is-invalid');
+        firstInvalid?.focus();
+      }
+      return allValid;
+    }
+  };
+
+  // --- Application Start ---
+  controller.init();
+</script>
+
+</body>
+</html>
